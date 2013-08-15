@@ -1,6 +1,7 @@
-# rHeight
+rHeight
+====
 
-A jQuery plugin that uses min-height to force DOM elements to the height of the viewport. Basically a CSS style="height:100%" analogue to style="width:100%".
+A jQuery plugin that uses min-height to force DOM elements to the height of the viewport.
 
 #### Allows for:
 

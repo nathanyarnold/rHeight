@@ -70,6 +70,7 @@
 
 		<div class="wrapper" id="one" 
 			data-rheight="true"
+			data-rheight-attr="min-height"
 			data-rheight-offset="#hd, #ft">
 				<div class="cnt">
 					<h2>Title, block #1</h2>
@@ -80,6 +81,7 @@
 
 		<div class="wrapper" id="two" 
 			data-rheight="true" 
+			data-rheight-attr="min-height"
 			data-rheight-threshold="500">
 				<div class="cnt">
 					<h2>Title, block #2</h2>
@@ -90,6 +92,7 @@
 
 		<div class="wrapper" id="three" 
 			data-rheight="true" 
+			data-rheight-attr="min-height"
 			data-rheight-minheight="1:1"
 			data-rheight-offset="#hd, #ft">
 				<div class="cnt">
@@ -101,6 +104,7 @@
 
 		<div class="wrapper" id="four" 
 			data-rheight="true"
+			data-rheight-attr="min-height"
 			data-rheight-maxheight="1:1"
 			data-rheight-offset="#hd, #ft">
 				<div class="cnt">
@@ -108,7 +112,7 @@
 					<p>Paragraph text, block #4. No min-width threshold. Max-height of 1:1. Dynamic offset of header/footer height. With child-node.</p>
 				</div>
 				<div class="bg"></div>
-				<span class="childNode" data-rheight-child="true">This is a child node.</span>
+				<span class="childNode" data-rheight-child="true" data-rheight-child-attr="min-height">This is a child node.</span>
 		</div><!-- .wrapper#four -->
 
 	</div><!-- #bd -->

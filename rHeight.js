@@ -134,7 +134,8 @@
 			},
 
 			setViewport: function() {
-				//console.log('NHW.Common.setViewport()');
+				//console.log("$.fn['"+ pluginName +"'].methods.setViewport()");
+
 				viewport.width = $( document.body ).width();
 				viewport.height = $( window ).height();
 			},

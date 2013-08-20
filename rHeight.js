@@ -31,7 +31,7 @@
 			child:			'data-rheight-child',
 			// same as offset above, but does it on the child nodes. Note that it subtracts from the parent height, not the page height
 			childOffset:	'data-rheight-child-offset'
-		};
+		},
 
 		// Objects to work on
 		root = false,
@@ -182,11 +182,13 @@
 		};
 
 	$.fn[pluginName] = function () {
+		console.log('controller()');
 		root = this;
 		methods.init();
 	};
 
 	$( function() {
+		console.log('autoInit()');
 		$( '['+ selectors.root + ']' )[ pluginName ]();
 	} );
 })(jQuery);

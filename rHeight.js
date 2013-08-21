@@ -19,7 +19,8 @@
 	var pluginName = 'nya_rHeight',
 		selectors = {
 			// set a minimum-width (int) of the viewport before this feature will engage (eg. 320 for iPhone portrait)
-			threshold:		'data-rheight-threshold',
+			thresholdWidth:	'data-rheight-threshold-width',
+			thresholdHeight:'data-rheight-threshold-height',
 			// set a min-height in either an int, or in a ratio (eg. '1:1' for square, '16:9' for photos)
 			minHeight:		'data-rheight-minheight',
 			// set a max-height in either an int, or in a ratio (eg. '1:1' for square, '16:9' for photos)
@@ -85,10 +86,16 @@
 					var $this = $( this );
 
 					// get threshold, if it doesn't make it, don't do this
-					if ( viewport.width < $this.attr( selectors.threshold ) ) {
+					if ( $this.attr( selectors.thresholdWidth ) && viewport.width < $this.attr( selectors.thresholdWidth ) ) {
 						methods.disable( $this );
 						return;
 					};
+
+					// get height threshold, if it doesn't make it, don't do this
+					if ( $this.attr( selectors.thresholdHeight ) && viewport.height < $this.attr( selectors.thresholdHeight ) ) {
+                        methods.disable( $this );
+                        return;
+                    };
 
 					// otherwise, resize
 					methods.resizeModule( $this );
@@ -121,7 +128,7 @@
 
 				// define height
 				var newHeight = viewport.height - offset;
-				var attr = $mod.attr( selectors.rootAttr );
+				var attr = methods._getAttr( $mod.attr( selectors.rootAttr ) );
 				
 				// respect min-height
 				if ( $mod.attr( selectors.minHeight ) && newHeight < methods._getHeight( $mod.attr( selectors.minHeight ), viewport.width ) )
@@ -145,7 +152,7 @@
 
 				// resize
 				var newHeight = parentHeight;
-				var attr = $child.attr( selectors.childAttr );
+				var attr = methods._getAttr( $child.attr( selectors.childAttr ) );
 				$child.attr( 'style', attr +':'+ newHeight +'px;' );
 			},
 
@@ -154,6 +161,11 @@
 
 				viewport.width = $( document.body ).width();
 				viewport.height = $( window ).height();
+			},
+
+			_getAttr: function( attr ) {
+				attr = ( !attr ) ? 'min-height' : attr;
+				return attr;
 			},
 
 			// returns a pixel height value where a pixel or ratio is sent in

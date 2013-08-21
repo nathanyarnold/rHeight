@@ -30,6 +30,7 @@
 		div#two {background:blue}
 		div#three {background:green}
 		div#four {background:orange; padding-right:70px;}
+		div#five {background:blue}
 
 		h2,p {background:#fff; display:block; padding:4px 10px; margin:20px 0 10px}
 
@@ -70,7 +71,6 @@
 
 		<div class="wrapper" id="one" 
 			data-rheight="true"
-			data-rheight-attr="min-height"
 			data-rheight-offset="#hd, #ft">
 				<div class="cnt">
 					<h2>Title, block #1</h2>
@@ -82,7 +82,7 @@
 		<div class="wrapper" id="two" 
 			data-rheight="true" 
 			data-rheight-attr="min-height"
-			data-rheight-threshold="500">
+			data-rheight-threshold-width="500">
 				<div class="cnt">
 					<h2>Title, block #2</h2>
 					<p>Paragraph text, block #2. Min-width threshold of 500px. NO offset of header/footer height.</p>
@@ -114,6 +114,16 @@
 				<div class="bg"></div>
 				<span class="childNode" data-rheight-child="true" data-rheight-child-attr="min-height">This is a child node.</span>
 		</div><!-- .wrapper#four -->
+
+        <div class="wrapper" id="five"
+            data-rheight="true"
+            data-rheight-threshold-height="500">
+                <div class="cnt">
+                    <h2>Title, block #5</h2>
+                    <p>Paragraph text, block #5. Min-height threshold of 500px. NO offset of header/footer height.</p>
+                </div>
+                <div class="bg"></div>
+        </div><!-- .wrapper#two -->
 
 	</div><!-- #bd -->
 

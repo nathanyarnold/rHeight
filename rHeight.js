@@ -78,7 +78,7 @@
 				//console.log("$.fn['"+ pluginName +"'].methods.handleResize()");
 
 				// get viewport dimensions
-				methods.setViewport();
+				methods._setViewport();
 			
 				// resize
 				root.each(function() {
@@ -140,25 +140,29 @@
 				$mod.attr( 'style', attr +':'+ newHeight +'px;' );
 
 				// look for inner nodes to resize as well
-				var $children = $mod.find( '['+ selectors.child +']' );
-				$children.each( function() {
-					methods.resizeChild( $(this), newHeight );
-				});
+				methods._resizeChildren( $mod, newHeight );
 			},
 
-			resizeChild: function( $child, parentHeight ) {
-				//console.log("$.fn['"+ pluginName +"'].methods.handleChild()");
+			_resizeChildren: function( $mod, height ) {
+				//console.log("$.fn['"+ pluginName +"'].methods._resizeChildren($mod, '"+ height +"')");
+				var $children = $mod.find( '['+ selectors.child +']' );
+                $children.each( function() {
+                    methods._resizeChild( $(this), height );
+                });
+			},
+
+			_resizeChild: function( $child, height ) {
+				//console.log("$.fn['"+ pluginName +"'].methods._resizeChild($child, '"+ height +"')");
 				//console.log( $child );
 
 				// resize
-				var newHeight = parentHeight;
 				var attr = methods._getAttr( $child.attr( selectors.childAttr ) );
-				var val  = methods._getAttrValue ( $child, $child.attr( selectors.childAttr ), newHeight );
+				var val  = methods._getAttrValue ( $child, $child.attr( selectors.childAttr ), height );
 				$child.attr( 'style', attr +':'+ val +'px;' );
 			},
 
-			setViewport: function() {
-				//console.log("$.fn['"+ pluginName +"'].methods.setViewport()");
+			_setViewport: function() {
+				//console.log("$.fn['"+ pluginName +"'].methods._setViewport()");
 
 				viewport.width = $( document.body ).width();
 				viewport.height = $( window ).height();

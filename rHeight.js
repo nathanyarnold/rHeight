@@ -148,12 +148,14 @@
 			},
 
 			resizeChild: function( $child, parentHeight ) {
-				//console.log("   - $.fn['"+ pluginName +"'].methods.handleChild()");
+				//console.log("$.fn['"+ pluginName +"'].methods.handleChild()");
+				//console.log( $child );
 
 				// resize
 				var newHeight = parentHeight;
 				var attr = methods._getAttr( $child.attr( selectors.childAttr ) );
-				$child.attr( 'style', attr +':'+ newHeight +'px;' );
+				var val  = methods._getAttrValue ( $child, $child.attr( selectors.childAttr ), newHeight );
+				$child.attr( 'style', attr +':'+ val +'px;' );
 			},
 
 			setViewport: function() {
@@ -164,8 +166,20 @@
 			},
 
 			_getAttr: function( attr ) {
-				attr = ( !attr ) ? 'min-height' : attr;
-				return attr;
+				//console.log("  $.fn['"+ pluginName +"'].methods._getAttr('"+ attr +"')");
+				var rAttr = 'min-height';
+				switch ( attr ) {
+					case 'center':
+						rAttr = 'margin-top';
+						break;
+				};
+				return rAttr;
+			},
+
+			_getAttrValue: function( $this, attr, height ) {
+				//console.log("  $.fn['"+ pluginName +"'].methods._getAttrValue('"+ attr +"', '"+ height +"')");
+				rAttr = ( attr=='center' ) ? ( height - $this.outerHeight() ) /2 : height;
+				return rAttr;	
 			},
 
 			// returns a pixel height value where a pixel or ratio is sent in

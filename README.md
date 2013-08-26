@@ -16,9 +16,9 @@ Currently requires CSS box-model "box-sizing:border-box" on all elements to work
 
 #### To-do:
 
-1. Allow sizable child-nodes to also have their own independant offset,
-2. Calculate heights with default CSS box-model (height + margin + border),
-3. Allow child nodes that are centered in their parent using "data-rheight-child-centered.
+1. Allow sibling-nodes to get these values (ie, not necessarily child-nodes of the root rHeight element)
+2. Allow child-nodes to also have their own independant offset,
+3. Calculate heights with default CSS box-model (height + margin + border),
 
 ## Markup pattern:
 

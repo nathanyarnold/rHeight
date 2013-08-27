@@ -181,8 +181,13 @@
 
 			_getAttrValue: function( $this, attr, height ) {
 				//console.log("  $.fn['"+ pluginName +"'].methods._getAttrValue('"+ attr +"', '"+ height +"')");
-				rAttr = ( attr=='center' ) ? ( height - $this.outerHeight() ) /2 : height;
-				return rAttr;	
+				if ( attr=='center' ) {
+					// if outerHeight is larger, return zero, otherwise, center vertically
+					var rAttr = ( height > $this.outerHeight() ) ? ( height - $this.outerHeight() ) / 2 : 0;
+				} else {
+					var rAttr = height;
+				}
+				return rAttr;
 			},
 
 			// returns a pixel height value where a pixel or ratio is sent in

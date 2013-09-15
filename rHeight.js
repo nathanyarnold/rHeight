@@ -167,6 +167,9 @@
 				//console.log("  $.fn['"+ pluginName +"'].methods._getAttr('"+ attr +"')");
 				var rAttr = 'min-height';
 				switch ( attr ) {
+					case 'height':
+						rAttr = 'height';
+						break; 
 					case 'center':
 						rAttr = 'margin-top';
 						break;

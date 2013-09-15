@@ -9,9 +9,7 @@
 			- extention of set height to all specified child-nodes.
 		Note: Currently requires CSS box-model "box-sizing:border-box" on all elements to work.
 	To-do:
-		1. Allow sibling-nodes to get these values (ie, not necessarily child-nodes of the root rHeight element)
-		2. Allow child-nodes to also have their own independant offset,
-		3. Calculate heights with default CSS box-model (height + margin + border),
+		1. Calculate heights with default CSS box-model (height + margin + border),
 */
 (function( $ ){
 
@@ -25,26 +23,19 @@
 			// set a max-height in either an int, or in a ratio (eg. '1:1' for square, '16:9' for photos)
 			maxHeight:		'data-rheight-maxheight',
 
-            // set to "true" for this all to work
-            root:           'data-rheight',
-            // tell the system what CSS attr we want to change on the root-node
-            rootAttr:       'data-rheight-attr',
+			// set to "true" for this all to work
+			root:			'data-rheight',
+			// tell the system what CSS attr we want to change on the root-node
+			rootAttr:		'data-rheight-attr',
 			// allows you to subtract either an int from the calculated height, or the combined heights of any selectors you pass in
-			rootOffset:     'data-rheight-offset',
+			rootOffset:		'data-rheight-offset',
 
 			// set any child-nodes that get this to "true" and they'll get the same value passed down from root
 			child:			'data-rheight-child',
 			// attr we want to change on the child-node
-            childAttr:      'data-rheight-child-attr',
+			childAttr:		'data-rheight-child-attr',
 			// same as offset above, but does it on the child nodes. Note that it subtracts from the parent height, not the page height
 			childOffset:	'data-rheight-child-offset',
-
-			// set any sibling-nodes that get this and they will get the same css value passed over from root (use root-node selector here, so we tie it to the parent properly)
-			//sibling:		'data-rheight-sibling',
-			// attr we want to change on the sibling-node
-			//siblingAttr:	'data-rheight-sibling-attr',
-			// same as other offsets, but applies to siblings
-			//siblingOffset:	'data-rheight-sibling-offset',
 		},
 
 		// Objects to work on
@@ -70,8 +61,8 @@
 				);
 
 				// eventListener on any page-resize
-                $( window ).on( 'orientationchange', $.proxy( this, 'handleResize' ) );
-                $( window ).on( 'resize', $.proxy( this, 'handleResize' ) );
+				$( window ).on( 'orientationchange', $.proxy( this, 'handleResize' ) );
+				$( window ).on( 'resize', $.proxy( this, 'handleResize' ) );
 			},
 
 			handleResize: function() {
@@ -92,9 +83,9 @@
 
 					// get height threshold, if it doesn't make it, don't do this
 					if ( $this.attr( selectors.thresholdHeight ) && viewport.height < $this.attr( selectors.thresholdHeight ) ) {
-                        methods.disable( $this );
-                        return;
-                    };
+						methods.disable( $this );
+						return;
+					};
 
 					// otherwise, resize
 					methods.resizeModule( $this );
@@ -108,8 +99,8 @@
 				$mod.attr( 'style', '' );
 				var $children = $mod.find( '['+ selectors.child +']' );
 				$children.each( function() {
-                    $(this).attr( 'style', '' );
-                });
+					$(this).attr( 'style', '' );
+				});
 			},
 
 			// using, set styles
@@ -123,7 +114,7 @@
 				};
 
 				// figure out offset
-				var offset = methods._getOffset( $mod );
+				var offset = methods._getOffset( $mod, selectors.rootOffset );
 
 				// define height
 				var newHeight = viewport.height - offset;
@@ -146,18 +137,22 @@
 			_resizeChildren: function( $mod, height ) {
 				//console.log("$.fn['"+ pluginName +"'].methods._resizeChildren($mod, '"+ height +"')");
 				var $children = $mod.find( '['+ selectors.child +']' );
-                $children.each( function() {
-                    methods._resizeChild( $(this), height );
-                });
+				$children.each( function() {
+					methods._resizeChild( $(this), height );
+				});
 			},
 
 			_resizeChild: function( $child, height ) {
 				//console.log("$.fn['"+ pluginName +"'].methods._resizeChild($child, '"+ height +"')");
 				//console.log( $child );
 
+				// figure out offset
+				var offset = methods._getOffset( $child, selectors.childOffset );
+				//console.log(' - offset:'+ offset);
+
 				// resize
 				var attr = methods._getAttr( $child.attr( selectors.childAttr ) );
-				var val  = methods._getAttrValue ( $child, $child.attr( selectors.childAttr ), height );
+				var val  = methods._getAttrValue ( $child, $child.attr( selectors.childAttr ), height-offset );
 				$child.attr( 'style', attr +':'+ val +'px;' );
 			},
 
@@ -204,19 +199,19 @@
 				};
 			},
 
-			_getOffset: function( $mod ) {
+			_getOffset: function( $mod, offsetAttr ) {
 				//console.log("   - $.fn['"+ pluginName +"'].methods._getOffset()");
 				
 				// just return 0 if not set
-				if ( !$mod.attr( selectors.rootOffset ) || $mod.attr( selectors.rootOffset )=="0")
+				if ( !$mod.attr( offsetAttr ) || $mod.attr( offsetAttr )=="0")
 					return 0;
 
 				// or return offset if its an int
-				if ( $mod.attr( selectors.rootOffset ) == parseInt($mod.attr( selectors.rootOffset )) )
-					return $mod.attr( selectors.rootOffset );
+				if ( $mod.attr( offsetAttr ) == parseInt($mod.attr( offsetAttr )) )
+					return $mod.attr( offsetAttr );
 
 				// else return element height
-				var $node = $( $mod.attr( selectors.rootOffset ) );
+				var $node = $( $mod.attr( offsetAttr ) );
 				if ( $node.length > 0 )  {
 					var height = 0;
 					$node.each( function() {

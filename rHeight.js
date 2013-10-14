@@ -147,7 +147,7 @@
 				//console.log( $child );
 
 				// figure out offset
-				var offset = methods._getOffset( $child, selectors.childOffset );
+				var offset = methods._getOffset( $child, selectors.childOffset, height );
 				//console.log(' - offset:'+ offset);
 
 				// resize
@@ -165,16 +165,23 @@
 
 			_getAttr: function( attr ) {
 				//console.log("  $.fn['"+ pluginName +"'].methods._getAttr('"+ attr +"')");
-				var rAttr = 'min-height';
 				switch ( attr ) {
+					case 'min-height':
 					case 'height':
-						rAttr = 'height';
-						break; 
+					case 'margin-top':
+					case 'padding-top':
+					case 'border-top':
+					case 'margin-bottom':
+					case 'padding-bottom':
+					case 'border-bottom':
+					case 'top':
+					case 'bottom':
+						return attr;
 					case 'center':
-						rAttr = 'margin-top';
-						break;
+						return 'margin-top';
+					default:
+						return 'min-height';
 				};
-				return rAttr;
 			},
 
 			_getAttrValue: function( $this, attr, height ) {
@@ -202,16 +209,24 @@
 				};
 			},
 
-			_getOffset: function( $mod, offsetAttr ) {
-				//console.log("   - $.fn['"+ pluginName +"'].methods._getOffset()");
+			_getOffset: function( $mod, offsetAttr, height ) {
+				//console.log("   - $.fn['"+ pluginName +"'].methods._getOffset( $mod, '"+ offsetAttr +"')");
 				
 				// just return 0 if not set
 				if ( !$mod.attr( offsetAttr ) || $mod.attr( offsetAttr )=="0")
 					return 0;
 
-				// or return offset if its an int
-				if ( $mod.attr( offsetAttr ) == parseInt($mod.attr( offsetAttr )) )
+				// get values
+				var value = $mod.attr( offsetAttr );
+				var intValue = parseInt( value );
+
+				// or return offset if it's an int
+				if ( value==intValue || value==intValue+'px')
 					return $mod.attr( offsetAttr );
+
+				// or return offset if it's a %
+				if ( value==intValue+'%')
+					return Math.round(height * .01 * intValue);
 
 				// else return element height
 				var $node = $( $mod.attr( offsetAttr ) );

@@ -35,6 +35,7 @@
 		h2,p {background:#fff; display:block; padding:4px 10px; margin:20px 0 10px}
 
 		span {position:absolute; top:0; right:0; padding:20px; width:100px; height:100px; background:#aaa; z-index:1000;}
+		div#six span {background:yellow}
 
 		div.cnt {position:relative; z-index:100; }
 		div.bg {background-position:50% 50%; background-size:cover; 
@@ -77,6 +78,7 @@
 					<p>Paragraph text, block #1. No min-width threshold. No min-width requirement. No min-height requirement. Allow dynamic offset of header/footer height.</p>
 				</div>
 				<div class="bg"></div>
+				<span class="childNode" data-rheight-child="true" data-rheight-child-attr="margin-top" data-rheight-child-offset="90%">This is a child node.</span>
 		</div><!-- .wrapper#one -->
 
 		<div class="wrapper" id="two" 

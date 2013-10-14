@@ -36,6 +36,9 @@
 			childAttr:		'data-rheight-child-attr',
 			// same as offset above, but does it on the child nodes. Note that it subtracts from the parent height, not the page height
 			childOffset:	'data-rheight-child-offset',
+			// set a minimum-width (int) of the viewport before this feature will engage (eg. 320 for iPhone portrait)
+			childThresholdWidth: 'data-rheight-child-threshold-width',
+			childThresholdHeight: 'data-rheight-child-threshold-height'
 		},
 
 		// Objects to work on
@@ -138,7 +141,22 @@
 				//console.log("$.fn['"+ pluginName +"'].methods._resizeChildren($mod, '"+ height +"')");
 				var $children = $mod.find( '['+ selectors.child +']' );
 				$children.each( function() {
-					methods._resizeChild( $(this), height );
+	
+					var $this = $(this);
+
+                    // get threshold, if it doesn't make it, don't do this
+                    if ( $this.attr( selectors.childThresholdWidth ) && viewport.width < $this.attr( selectors.childThresholdWidth ) ) {
+                        methods._disableChild( $this );
+                        return;
+                    };
+
+                    // get height threshold, if it doesn't make it, don't do this
+                    if ( $this.attr( selectors.childThresholdHeight ) && viewport.height < $this.attr( selectors.childThresholdHeight ) ) {
+                        methods._disableChild( $this );
+                        return;
+                    };
+
+					methods._resizeChild( $this, height );
 				});
 			},
 
@@ -154,6 +172,10 @@
 				var attr = methods._getAttr( $child.attr( selectors.childAttr ) );
 				var val  = methods._getAttrValue ( $child, $child.attr( selectors.childAttr ), height-offset );
 				$child.attr( 'style', attr +':'+ val +'px;' );
+			},
+
+			_disableChild: function( $child ) {
+				$child.attr( 'style', '' );
 			},
 
 			_setViewport: function() {

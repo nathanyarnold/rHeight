@@ -35,6 +35,8 @@
 		h2,p {background:#fff; display:block; padding:4px 10px; margin:20px 0 10px}
 
 		span {position:absolute; top:0; right:0; padding:20px; width:100px; height:100px; background:#aaa; z-index:1000;}
+		div#one span,
+		div#four span {height:auto}
 		div#six span {background:yellow}
 
 		div.cnt {position:relative; z-index:100; }
@@ -78,7 +80,7 @@
 					<p>Paragraph text, block #1. No min-width threshold. No min-width requirement. No min-height requirement. Allow dynamic offset of header/footer height.</p>
 				</div>
 				<div class="bg"></div>
-				<span class="childNode" data-rheight-child="true" data-rheight-child-attr="margin-top" data-rheight-child-offset="90%">This is a child node.</span>
+				<span class="childNode" data-rheight-child="true" data-rheight-child-attr="margin-top" data-rheight-child-offset="90%">This is a child node, set 10% down the module.</span>
 		</div><!-- .wrapper#one -->
 
 		<div class="wrapper" id="two" 
@@ -114,7 +116,7 @@
 					<p>Paragraph text, block #4. No min-width threshold. Max-height of 1:1. Dynamic offset of header/footer height. With child-node.</p>
 				</div>
 				<div class="bg"></div>
-				<span class="childNode" data-rheight-child="true" data-rheight-child-attr="center">This is a child node.</span>
+				<span class="childNode" data-rheight-child="true" data-rheight-child-attr="center">This is a child node, vertically centred.</span>
 		</div><!-- .wrapper#four -->
 
         <div class="wrapper" id="five"
@@ -136,7 +138,7 @@
                     <p>Paragraph text, block #5. Min-height threshold of 500px. NO offset of header/footer height.</p>
                 </div>
                 <div class="bg"></div>
-                <span class="childNode" data-rheight-child="true" data-rheight-child-attr="height" data-rHeight-child-offset="100">This is a child node.</span>
+                <span class="childNode" data-rheight-child="true" data-rheight-child-attr="height" data-rHeight-child-offset="100">This is a child node, with 100px offset.</span>
         </div><!-- .wrapper#six -->
 
 

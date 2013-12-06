@@ -42,7 +42,7 @@ If you would like to set another CSS attribute (other than *min-height*) you can
 
 #### Offsets
 
-If you don't want to use the FULL height of the viewport, you can specify an offset using the **data-rHeight-offset** attribute. You can pass in either a fixed pixel value (eg. "25" or "25px"), a %-based value (eg. "25%"), or a jQuery selector where it will calculate the outerHeight(). 
+If you don't want to use the FULL height of the viewport, you can specify an offset using the **data-rHeight-offset** attribute. You can pass in either a fixed pixel value (eg. "25" or "25px"), a %-based value (eg. "25%"), or a jQuery selector where it will calculate the outerHeight() of any nodes it finds. 
 
     <div data-rHeight="true" data-rHeight-offset="25px"></div>  // 25 pixels
     <div data-rHeight="true" data-rHeight-offset="25%"></div>   // 20%

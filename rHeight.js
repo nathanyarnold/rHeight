@@ -13,8 +13,15 @@
 */
 (function( $ ){
 
-	var pluginName = 'nya_rHeight',
+	var pluginName = 'rHeight',
 		selectors = {
+            // set to "true" for this all to work
+            root:           'data-rheight',
+            // tell the system what CSS attr we want to change on the root-node
+            rootAttr:       'data-rheight-attr',
+            // allows you to subtract either an int from the calculated height, or the combined heights of any selectors you pass in
+            rootOffset:     'data-rheight-offset',
+
 			// set a minimum-width (int) of the viewport before this feature will engage (eg. 320 for iPhone portrait)
 			thresholdWidth:	'data-rheight-threshold-width',
 			thresholdHeight:'data-rheight-threshold-height',
@@ -22,13 +29,6 @@
 			minHeight:		'data-rheight-minheight',
 			// set a max-height in either an int, or in a ratio (eg. '1:1' for square, '16:9' for photos)
 			maxHeight:		'data-rheight-maxheight',
-
-			// set to "true" for this all to work
-			root:			'data-rheight',
-			// tell the system what CSS attr we want to change on the root-node
-			rootAttr:		'data-rheight-attr',
-			// allows you to subtract either an int from the calculated height, or the combined heights of any selectors you pass in
-			rootOffset:		'data-rheight-offset',
 
 			// set any child-nodes that get this to "true" and they'll get the same value passed down from root
 			child:			'data-rheight-child',
@@ -59,17 +59,17 @@
 
 				// set fixed-height on page load
 				window.setTimeout( function() {
-						methods.handleResize();
+						methods.resize();
 					}, 10
 				);
 
 				// eventListener on any page-resize
-				$( window ).on( 'orientationchange', $.proxy( this, 'handleResize' ) );
-				$( window ).on( 'resize', $.proxy( this, 'handleResize' ) );
+				$( window ).on( 'orientationchange', $.proxy( this, 'resize' ) );
+				$( window ).on( 'resize', $.proxy( this, 'resize' ) );
 			},
 
-			handleResize: function() {
-				//console.log("$.fn['"+ pluginName +"'].methods.handleResize()");
+			resize: function() {
+				//console.log("$.fn['"+ pluginName +"'].methods.resize()");
 
 				// get viewport dimensions
 				methods._setViewport();
@@ -91,7 +91,7 @@
 					};
 
 					// otherwise, resize
-					methods.resizeModule( $this );
+					methods._resizeNode( $this );
 				});
 			},
 
@@ -106,8 +106,8 @@
 				});
 			},
 
-			// using, set styles
-			resizeModule: function ( $mod ) {
+			// set styles for each registered item
+			_resizeNode: function ( $mod ) {
 				//console.log(" - $.fn['"+ pluginName +"'].methods.handleModule()");
 
 				// get threshold, if it doesn't make it, don't do this

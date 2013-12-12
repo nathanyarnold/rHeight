@@ -68,9 +68,26 @@ Sometimes you won't want an element to be smaller than a certain height, or larg
 
 You may want to extend this functionality to any child-nodes of the element you're working on. A good example could be to set an outer DIV, and then an internal div to the same height. You can do this by adding the attribute **data-rHeight-child** to any nodes within the outer node set with **data-rHeight**:
 
-    <div data-rHeight="true">                  // set outter wrapper div
+    <div data-rHeight="true">                  // set outer wrapper div
         <div data-rHeight-child="true"></div>  // set inner div
     </div>
+    
+**Child Node Options**
 
+Two of the same options available to the parentNode, are also available to a child node:
+
+Use **data-rHeight-child-attr** to specify which CSS attribute is being set (eg, *height* instead of *min-height*). Use **data-rHeight-child-offset** to specify any additional offsets that should be applied to the child node. 
+
+Here's an example of both in action: we're going to set the outer wrapper div so that it has at least as much height as the viewport, and then margin the inner div so that it starts halfway down the screen:
+
+    <div data-rHeight="true">
+        <div data-rHeight-child="true" data-rHeight-child-attr="margin-top" data-rHeight-child-offset="50%"></div>
+    </div>
+
+Child nodes can also be centered within an outer element by setting **data-rHeight-child-attr="center"**. This can be helpful if you want to center some text on a full-screen element:
+
+    <div data-rHeight="true">
+        <div data-rHeight-child="true" data-rHeight-child-attr="center"></div>
+    </div>
 
 

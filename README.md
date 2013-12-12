@@ -55,5 +55,22 @@ In responsive-design layouts, you may not want this plugin to even run if the vi
 You can set either of these minimum threshold by using the **data-rHeight-threshold-width** and/or **data-rHeight-threshold-height** attributes:
 
     <div data-rHeight="true" data-rHeight-threshold-height="100"></div>
-	<div data-rHeight="true" data-rHeight-threshold-width="768"></div>
+    <div data-rHeight="true" data-rHeight-threshold-width="768"></div>
+
+#### Minimums and Maximums
+
+Sometimes you won't want an element to be smaller than a certain height, or larger than a certain height. You can specify either an absolute pixel value or a ratio, by setting the **data-rHeight-minheight** and/or **data-rHeight-maxheight** attributes:
+
+    <div data-rHeight="true" data-rHeight-minheight="100"></div>   // minimum 100px of height
+    <div data-rHeight="true" data-rHeight-maxheight="16:9"></div>  // a maximum height of 16:9 (ratio with width)
+    
+#### Child Nodes
+
+You may want to extend this functionality to any child-nodes of the element you're working on. A good example could be to set an outer DIV, and then an internal div to the same height. You can do this by adding the attribute **data-rHeight-child** to any nodes within the outer node set with **data-rHeight**:
+
+    <div data-rHeight="true">                  // set outter wrapper div
+        <div data-rHeight-child="true"></div>  // set inner div
+    </div>
+
+
 

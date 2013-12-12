@@ -19,6 +19,8 @@ Currently requires CSS box-model "box-sizing:border-box" on all elements to work
 - Calculate heights with default CSS box-model (height + margin + border).
 - Don't bind events if there is nothing to work on, keep better track of this
 - Allow maximum thresholds in addition to minimum thresholds
+- Allow nodes to be manually added to the plugin
+- Make naming conventions more consistent with rIframe
 
 
 

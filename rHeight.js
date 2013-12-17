@@ -255,7 +255,7 @@
 				if ( $node.length > 0 )  {
 					var height = 0;
 					$node.each( function() {
-						height += $(this).outerHeight();
+						height += $(this).outerHeight( true );
 					});
 					return height;
 				} else {

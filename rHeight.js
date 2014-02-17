@@ -189,6 +189,7 @@
 				//console.log("  $.fn['"+ pluginName +"'].methods._getAttr('"+ attr +"')");
 				switch ( attr ) {
 					case 'min-height':
+					case 'max-height':
 					case 'height':
 					case 'margin-top':
 					case 'padding-top':

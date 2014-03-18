@@ -5,7 +5,7 @@
 		Allows for:
 			- min-width thresholds (functionality doesn't engage until cpecified min-width is reached in viewport), 
 			- min-heights and max-heights on elements using either pixels or width:height ratios,
-		 	- offsets that subtract either a set pixels amount or the combined height of specified DOM elements from total height,
+			- offsets that subtract either a set pixels amount or the combined height of specified DOM elements from total height,
 			- extention of set height to all specified child-nodes.
 		Note: Currently requires CSS box-model "box-sizing:border-box" on all elements to work.
 	To-do:
@@ -15,38 +15,30 @@
 
 	var pluginName = 'rHeight',
 		selectors = {
-            // set to "true" for this all to work
-            root:           'data-rheight',
-            // tell the system what CSS attr we want to change on the root-node
-            rootAttr:       'data-rheight-attr',
-            // allows you to subtract either an int from the calculated height, or the combined heights of any selectors you pass in
-            rootOffset:     'data-rheight-offset',
-
-			// set a minimum-width (int) of the viewport before this feature will engage (eg. 320 for iPhone portrait)
-			thresholdWidth:	'data-rheight-threshold-width',
+			root: 'data-rheight',
+			rootAttr: 'data-rheight-attr',
+			rootOffset: 'data-rheight-offset',
+			thresholdWidth: 'data-rheight-threshold-width',
 			thresholdHeight:'data-rheight-threshold-height',
-			// set a min-height in either an int, or in a ratio (eg. '1:1' for square, '16:9' for photos)
 			minHeight:		'data-rheight-minheight',
-			// set a max-height in either an int, or in a ratio (eg. '1:1' for square, '16:9' for photos)
 			maxHeight:		'data-rheight-maxheight',
 
-			// set any child-nodes that get this to "true" and they'll get the same value passed down from root
 			child:			'data-rheight-child',
-			// attr we want to change on the child-node
 			childAttr:		'data-rheight-child-attr',
-			// same as offset above, but does it on the child nodes. Note that it subtracts from the parent height, not the page height
 			childOffset:	'data-rheight-child-offset',
-			// set a minimum-width (int) of the viewport before this feature will engage (eg. 320 for iPhone portrait)
 			childThresholdWidth: 'data-rheight-child-threshold-width',
 			childThresholdHeight: 'data-rheight-child-threshold-height'
 		},
 
 		// Objects to work on
 		root = false,
+
 		viewport = {
 			width: 0,
 			height: 0
 		},
+
+		resizeTimer = false,
 
 		// METHODS
 		methods = {
@@ -65,7 +57,19 @@
 
 				// eventListener on any page-resize
 				$( window ).on( 'orientationchange', $.proxy( this, 'resize' ) );
-				$( window ).on( 'resize', $.proxy( this, 'resize' ) );
+				$( window ).on( 'resize', $.proxy( this, 'handleResize' ) );
+			},
+
+			// use this, so we're not CONSTANTLY re-calculating during a resize event
+			handleResize: function() {
+				// if we're already doing this, don't bother doing it again
+				if ( resizeTimer )
+					clearTimeout( resizeTimer )
+
+				// run method on resize
+				resizeTimer = window.setTimeout( function() {
+					methods.resize();
+				}, 50);
 			},
 
 			resize: function() {
@@ -122,6 +126,8 @@
 				// define height
 				var newHeight = viewport.height - offset;
 				var attr = methods._getAttr( $mod.attr( selectors.rootAttr ) );
+				//console.log('	newHeight: '+ newHeight);
+				//console.log('	attr: '+	attr );
 				
 				// respect min-height
 				if ( $mod.attr( selectors.minHeight ) && newHeight < methods._getHeight( $mod.attr( selectors.minHeight ), viewport.width ) )
@@ -144,17 +150,17 @@
 	
 					var $this = $(this);
 
-                    // get threshold, if it doesn't make it, don't do this
-                    if ( $this.attr( selectors.childThresholdWidth ) && viewport.width < $this.attr( selectors.childThresholdWidth ) ) {
-                        methods._disableChild( $this );
-                        return;
-                    };
+					// get threshold, if it doesn't make it, don't do this
+					if ( $this.attr( selectors.childThresholdWidth ) && viewport.width < $this.attr( selectors.childThresholdWidth ) ) {
+						methods._disableChild( $this );
+						return;
+					};
 
-                    // get height threshold, if it doesn't make it, don't do this
-                    if ( $this.attr( selectors.childThresholdHeight ) && viewport.height < $this.attr( selectors.childThresholdHeight ) ) {
-                        methods._disableChild( $this );
-                        return;
-                    };
+					// get height threshold, if it doesn't make it, don't do this
+					if ( $this.attr( selectors.childThresholdHeight ) && viewport.height < $this.attr( selectors.childThresholdHeight ) ) {
+						methods._disableChild( $this );
+						return;
+					};
 
 					methods._resizeChild( $this, height );
 				});
@@ -170,7 +176,7 @@
 
 				// resize
 				var attr = methods._getAttr( $child.attr( selectors.childAttr ) );
-				var val  = methods._getAttrValue ( $child, $child.attr( selectors.childAttr ), height-offset );
+				var val	= methods._getAttrValue ( $child, $child.attr( selectors.childAttr ), height-offset );
 				$child.attr( 'style', attr +':'+ val +'px;' );
 			},
 
@@ -186,7 +192,7 @@
 			},
 
 			_getAttr: function( attr ) {
-				//console.log("  $.fn['"+ pluginName +"'].methods._getAttr('"+ attr +"')");
+				//console.log("	$.fn['"+ pluginName +"'].methods._getAttr('"+ attr +"')");
 				switch ( attr ) {
 					case 'min-height':
 					case 'max-height':
@@ -208,7 +214,7 @@
 			},
 
 			_getAttrValue: function( $this, attr, height ) {
-				//console.log("  $.fn['"+ pluginName +"'].methods._getAttrValue('"+ attr +"', '"+ height +"')");
+				//console.log("	$.fn['"+ pluginName +"'].methods._getAttrValue('"+ attr +"', '"+ height +"')");
 				if ( attr=='center' ) {
 					// if outerHeight is larger, return zero, otherwise, center vertically
 					var rAttr = ( height > $this.outerHeight() ) ? ( height - $this.outerHeight() ) / 2 : 0;
@@ -220,7 +226,7 @@
 
 			// returns a pixel height value where a pixel or ratio is sent in
 			_getHeight: function( height, width ) {
-				//console.log("   - $.fn['"+ pluginName +"'].methods._getHeight("+ height +", "+ width +")");
+				//console.log("	 - $.fn['"+ pluginName +"'].methods._getHeight("+ height +", "+ width +")");
 
 				if ( height.indexOf(':') < 0 ) {
 					// if absulute value, simply return
@@ -233,27 +239,45 @@
 			},
 
 			_getOffset: function( $mod, offsetAttr, height ) {
-				//console.log("   - $.fn['"+ pluginName +"'].methods._getOffset( $mod, '"+ offsetAttr +"')");
+				//console.log("	 - $.fn['"+ pluginName +"'].methods._getOffset( $mod, '"+ offsetAttr +"')");
 				
-				// just return 0 if not set
+				// just return 0 if attribute is not set
 				if ( !$mod.attr( offsetAttr ) || $mod.attr( offsetAttr )=="0")
 					return 0;
 
-				// get values
+				// return 0 if there's an attribute, but no value
 				var value = $mod.attr( offsetAttr );
+				if ( !value )
+					return 0;
+
+				// split values by comma
+				var valuesArray = value.split(',');
+
+				// go through each item, get offset for each
+				var total = 0;
+				$.each(valuesArray, function(i, value) {
+					var subTotal = methods._getOffsetItem( value.trim() );
+					total += subTotal;
+				});
+
+				return total;
+		 },
+
+		 _getOffsetItem: function( value ) { 
+				// get int value
 				var intValue = parseInt( value );
 
-				// or return offset if it's an int
+				// simply return px value, if it's an int
 				if ( value==intValue || value==intValue+'px')
-					return $mod.attr( offsetAttr );
+					return intValue;
 
 				// or return offset if it's a %
 				if ( value==intValue+'%')
 					return Math.round(height * .01 * intValue);
 
 				// else return element height
-				var $node = $( $mod.attr( offsetAttr ) );
-				if ( $node.length > 0 )  {
+				var $node = $( value );
+				if ( $node.length > 0 )	{
 					var height = 0;
 					$node.each( function() {
 						height += $(this).outerHeight( true );
